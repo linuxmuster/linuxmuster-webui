@@ -1,0 +1,12 @@
+aj==2.1.15
+ajenti-panel==2.1.15
+ajenti.plugin.ace==0.24
+ajenti.plugin.auth-users==0.26
+ajenti.plugin.core==0.76
+ajenti.plugin.dashboard==0.34
+ajenti.plugin.filesystem==0.36
+ajenti.plugin.passwd==0.20
+ajenti.plugin.plugins==0.39
+ajenti.plugin.settings==0.21
+unicodecsv==0.14.1
+python-ldap==2.4.25

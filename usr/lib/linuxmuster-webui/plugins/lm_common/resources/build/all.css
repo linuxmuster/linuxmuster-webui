@@ -1,0 +1,22 @@
+[uib\:typeahead].scrollable > .dropdown-menu,
+[uib\:typeahead].scrollable + .dropdown-menu {
+  max-height: 300px;
+  overflow: auto;
+}
+.lm-table {
+  width: 100%;
+}
+.lm-table th {
+  padding: 2px 5px;
+}
+.lm-table-inputs th {
+  padding-left: 10px;
+}
+.lm-table-padded td {
+  padding: 4px 5px;
+}
+[uib-dropdown-menu].scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
