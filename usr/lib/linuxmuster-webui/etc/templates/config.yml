@@ -15,6 +15,30 @@ auth:
         sidebar:view:/view/settings: false
         sidebar:view:/view/terminal: false
       uid: 0
+    administrator:
+      permissions:
+        sidebar:view:/view/auth-users: false
+        sidebar:view:/view/datetime: false
+        sidebar:view:/view/filemanager//: false
+        sidebar:view:/view/notepad: false
+        sidebar:view:/view/packages/apt: false
+        sidebar:view:/view/plugins: false
+        sidebar:view:/view/services: false
+        sidebar:view:/view/settings: false
+        sidebar:view:/view/terminal: false
+      uid: 0
+    domadmin:
+      permissions:
+        sidebar:view:/view/auth-users: false
+        sidebar:view:/view/datetime: false
+        sidebar:view:/view/filemanager//: false
+        sidebar:view:/view/notepad: false
+        sidebar:view:/view/packages/apt: false
+        sidebar:view:/view/plugins: false
+        sidebar:view:/view/services: false
+        sidebar:view:/view/settings: false
+        sidebar:view:/view/terminal: false
+      uid: 0
   root:
       permissions: {}
       uid: 0
