@@ -1,0 +1,12 @@
+Source: linuxmuster-webui
+Section: admin
+Priority: optional
+Maintainer: Thomas Schmitt <thomas@linuxmuster.net>
+Build-Depends: debhelper (>= 4.0.0), fakeroot
+
+Package: linuxmuster-webui
+Architecture: all
+Depends: python-pip, python-dev, python-lxml, libffi-dev, libssl-dev, libjpeg-dev, libpng-dev, uuid-dev, python-dbus, libldap2-dev, libsasl2-dev
+Homepage: www.linuxmuster.net
+Recommends: sophomorix-base, linuxmuster-base
+Description: next generation web-based administration tool for linuxmuster.net
