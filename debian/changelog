@@ -1,3 +1,9 @@
+linuxmuster-webui (1.0.1-0) babo62; urgency=low
+
+  * fix permissions and var/home mismatch
+
+ -- Maurice Cazautet <maurice.cazautet@netzint.de>  Mon, 25 Jul 2016 15:25:23 +0200
+
 linuxmuster-webui (1.0.0-0) babo62; urgency=low
 
   * initial package.

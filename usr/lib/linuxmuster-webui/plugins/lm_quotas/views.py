@@ -27,8 +27,8 @@ class Handler(HttpPlugin):
                 if ':' in line and not line.startswith('#'):
                     k, v = line.split(':', 1)
                     r[k.strip()] = {
-                        'var': int(v.split('+')[0].strip()),
                         'home': int(v.split('+')[1].strip()),
+                        'var': int(v.split('+')[0].strip()),
                     }
 
             for line in open(mpath):
@@ -44,7 +44,7 @@ class Handler(HttpPlugin):
             with open(path, 'w') as f:
                 f.write('\n'.join(
                     '%s: %s+%s' % (
-                        k, v['var'], v['home'],
+                        k, v['home'], v['var'],
                     )
                     for k, v in http_context.json_body().items()
                 ))
@@ -70,8 +70,8 @@ class Handler(HttpPlugin):
                 {
                     'name': line.split('|')[0].strip(),
                     'quota': {
-                        'var': int(line.split('|')[2].strip().split('+')[0]),
-                        'home': int(line.split('|')[2].strip().split('+')[1]),
+                        'home': int(line.split('|')[2].strip().split('+')[0]),
+                        'var': int(line.split('|')[2].strip().split('+')[1]),
                     } if line.split('|')[2].strip() else {},
                     'mailquota': int(line.split('|')[3].strip()) if line.split('|')[3].strip() else None,
                 }
@@ -80,7 +80,7 @@ class Handler(HttpPlugin):
         if http_context.method == 'POST':
             for cls in http_context.json_body():
                 if cls['quota']['home']:
-                    subprocess.check_call(['sophomorix-class', '-c', cls['name'], '--quota', '%s+%s' % (cls['quota']['var'], cls['quota']['home'])])
+                    subprocess.check_call(['sophomorix-class', '-c', cls['name'], '--quota', '%s+%s' % (cls['quota']['home'], cls['quota']['var'])])
                 if cls['mailquota']:
                     subprocess.check_call(['sophomorix-class', '-c', cls['name'], '--mailquota', cls['mailquota']])
 
@@ -96,8 +96,8 @@ class Handler(HttpPlugin):
                 {
                     'name': line.split('|')[0].strip(),
                     'quota': {
-                        'var': int(line.split('|')[1].strip().split('+')[0]),
-                        'home': int(line.split('|')[1].strip().split('+')[1]),
+                        'home': int(line.split('|')[1].strip().split('+')[0]),
+                        'var': int(line.split('|')[1].strip().split('+')[1]),
                     } if '+' in line and len(line.split('|')[1].strip()) > 1 else {},
                 }
                 for line in lines
@@ -105,7 +105,7 @@ class Handler(HttpPlugin):
         if http_context.method == 'POST':
             for project in http_context.json_body():
                 if project['quota']['home']:
-                    subprocess.check_call(['sophomorix-project', '-c', project['name'], '--addquota', '%s+%s' % (project['quota']['var'], project['quota']['home'])])
+                    subprocess.check_call(['sophomorix-project', '-c', project['name'], '--addquota', '%s+%s' % (project['quota']['home'], project['quota']['var'])])
 
     @url(r'/api/lm/ldap-search')
     @authorize('lm:quotas:ldap-search')
