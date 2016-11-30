@@ -241,7 +241,7 @@ class Handler(HttpPlugin):
     def handle_api_users_password(self, http_context):
         action = http_context.json_body()['action']
         users = http_context.json_body()['users']
-        user = ','.join(users)
+        user = ','.join([x.strip() for x in users])
         if action == 'get':
             for l in subprocess.check_output('sophomorix-user -u %s' % user, shell=True).splitlines():
                 if 'FirstPassword' in l:

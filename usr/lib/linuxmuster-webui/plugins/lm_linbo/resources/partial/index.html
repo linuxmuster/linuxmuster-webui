@@ -20,15 +20,19 @@
                 </div>
             </div>
 
-            <div uib-dropdown>
-                <button class="btn btn-default" uib-dropdown-toggle>
-                    <i class="fa fa-plus"></i> Create <i class="fa fa-caret-down"></i>
-                </button>
-                <ul uib-dropdown-menu class="scrollable">
-                    <li><a ng:click="createConfig()">Empty</a></li>
-                    <li ng:repeat="example in examples"><a ng:click="createConfig(example)">{{example}}</a></li>
-                </ul>
-            </div>
+            <div class="floating-toolbar-padder"></div>
+
+            <floating-toolbar>
+                <div uib-dropdown class="dropup">
+                    <button class="btn btn-default btn-flat" uib-dropdown-toggle>
+                        <i class="fa fa-plus"></i> Create <i class="fa fa-caret-up"></i>
+                    </button>
+                    <ul uib-dropdown-menu class="scrollable">
+                        <li><a ng:click="createConfig()">Empty</a></li>
+                        <li ng:repeat="example in examples"><a ng:click="createConfig(example)">{{example}}</a></li>
+                    </ul>
+                </div>
+            </floating-toolbar>
         </uib:tab>
         <uib:tab heading="{{'Images'|translate}}">
             <br/>

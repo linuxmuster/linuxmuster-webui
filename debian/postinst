@@ -27,6 +27,8 @@ case "$1" in
 	sed -i s/%%SUFFIX%%/$suffix/ $ajcfg
 	echo "link ajcfg to linuxmuster-webui folder"
 	ln -s $ajcfg $webuietc
+	echo "link init"
+	ln -s /etc/init/linuxmuster-webui.conf /etc/init.d/linuxmuster-webui
 	echo "set port 8000 to allow.."
 	sed -i 's/tcp .*/&,8000/' /etc/linuxmuster/allowed_ports
 	service linuxmuster-base restart

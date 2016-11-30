@@ -22,15 +22,37 @@
             <br/>
             <ace-editor ng:model="image.reg"></ace-editor>
 
-            <div uib-dropdown ng:show="imagesWithReg.length > 0">
+            <div uib-dropdown>
                 <button uib-dropdown-toggle class="btn btn-default">
                     <i class="fa fa-copy"></i> Copy from <i class="fa fa-caret-down"></i>
                 </button>
                 <ul uib-dropdown-menu>
                     <li ng:repeat="x in imagesWithReg"><a ng:click="image.reg = x.reg">{{x.name}}</a></li>
+                    <li ng:repeat="x in exampleRegs">
+                        <a ng:click="setExampleReg(x)">
+                            {{x}} <small><i>Example</i></small>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </uib:tab>
+        <uib:tab heading="{{'Postsync Script'|translate}}">
+            <br/>
+            <ace-editor ng:model="image.postsync"></ace-editor>
+
+            <div uib-dropdown>
+                <button uib-dropdown-toggle class="btn btn-default">
+                    <i class="fa fa-copy"></i> Copy from <i class="fa fa-caret-down"></i>
+                </button>
+                <ul uib-dropdown-menu>
+                    <li ng:repeat="x in imagesWithPostsync"><a ng:click="image.postsync = x.postsync">{{x.name}}</a></li>
+                    <li ng:repeat="x in examplePostsyncs">
+                        <a ng:click="setExamplePostsync(x)">
+                            {{x}} <small><i>Example</i></small>
+                </ul>
+            </div>
+        </uib:tab>
+
     </uib:tabset>
 </div>
 

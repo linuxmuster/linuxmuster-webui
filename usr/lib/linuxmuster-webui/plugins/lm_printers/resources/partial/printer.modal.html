@@ -13,12 +13,16 @@
         </div>
     </div>
 
+    <div class="alert alert-info" ng:show="printer.items.length == 0" translate>
+        No filter is set. All devices can use this printer.
+    </div>
+
     <br/>
 
     <div class="input-group">
         <input type="text" ng:model="newObject" required uib:typeahead="x for x in newObjects|filter:$viewValue" typeahead-editable="false" typeahead-min-length="0" placeholder="{{'Type to search...'|translate}}" class="form-control scrollable" />
         <span class="input-group-btn">
-            <button ng:click="add(newObject)" class="btn btn-primary" ng:disabled="!newObject">Add</button>
+            <button ng:click="add(newObject)" class="btn btn-primary" translate ng:disabled="!newObject">Add</button>
         </span>
     </div>
 </div>

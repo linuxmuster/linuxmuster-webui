@@ -23,7 +23,7 @@ angular.module('lm.workstations').controller 'LMWorkstationsApplyModalController
 
 
 
-angular.module('lm.workstations').controller 'LMWorkstationsController', ($scope, $http, $uibModal, gettext, notify, pageTitle, lmFileEditor, lmFileBackups) ->
+angular.module('lm.workstations').controller 'LMWorkstationsController', ($scope, $http, $uibModal, $route, gettext, notify, pageTitle, lmFileEditor, lmFileBackups) ->
     pageTitle.set(gettext('Workstations'))
 
     $scope.sorts = [
@@ -52,6 +52,8 @@ angular.module('lm.workstations').controller 'LMWorkstationsController', ($scope
     $scope.paging =
         page: 1
         pageSize: 100
+
+    $scope.stripComments = (value) -> !value.room or value.room[0] != '#'
 
     $scope.add = () ->
         $scope.paging.page = Math.floor(($scope.workstations.length - 1) / $scope.paging.pageSize) + 1

@@ -28,9 +28,24 @@ angular.module('lm.linbo').controller 'LMLINBOPartitionModalController', ($scope
         $uibModalInstance.dismiss()
 
 
-angular.module('lm.linbo').controller 'LMLINBOImageModalController', ($scope, $uibModal, $uibModalInstance, gettext, messagebox, image, images) ->
+angular.module('lm.linbo').controller 'LMLINBOImageModalController', ($scope, $uibModal, $uibModalInstance, $http, gettext, filesystem, messagebox, image, images) ->
     $scope.image = image
     $scope.imagesWithReg = (x for x in images when x.reg)
+    $scope.imagesWithPostsync = (x for x in images when x.postsync)
+
+    $http.get('/api/lm/linbo/examples-regs').then (resp) ->
+        $scope.exampleRegs = resp.data
+
+    $scope.setExampleReg = (name) ->
+        filesystem.read("/var/linbo/examples/#{name}").then (content) ->
+            $scope.image.reg = content
+
+    $http.get('/api/lm/linbo/examples-postsyncs').then (resp) ->
+        $scope.examplePostsyncs = resp.data
+
+    $scope.setExamplePostsync = (name) ->
+        filesystem.read("/var/linbo/examples/#{name}").then (content) ->
+            $scope.image.postsync = content
 
     $scope.save = () ->
         $uibModalInstance.close(image)
@@ -43,6 +58,8 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
     $scope.config = config
 
     $scope.kernelOptions = [
+        'quiet'
+        'splash'
         'acpi=noirq'
         'acpi=off'
         'irqpoll'
@@ -115,8 +132,8 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
         $scope.disks.remove(disk)
 
     $scope.getSize = (partition) ->
-        if not partition.Size
-            return 0
+        if not partition.Size or not partition.Size.toLowerCase
+            return
         ps = partition.Size.toLowerCase()
         s = parseInt(ps) * 1024
         if ps[ps.length - 1] == 'm'
@@ -161,7 +178,7 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
             Bootable: false
             FSType: 'swap'
             Id: '82'
-            Size: 1024 * 1024 * 2
+            Size: '4G'
             Label: ''
         }
         $scope.rebuildDisks()
@@ -171,7 +188,7 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
             Bootable: false
             FSType: 'ntfs'
             Id: '7'
-            Size: 1024 * 1024 * 10
+            Size: '10G'
             Label: ''
         }
         $scope.rebuildDisks()
@@ -222,7 +239,7 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
             Bootable: yes
             FSType: 'ntfs'
             Id: '7'
-            Size: 1024 * 1024 * 40
+            Size: '40G'
             Label: ''
         }
         disk.partitions.push partition
@@ -253,7 +270,7 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
             Bootable: yes
             FSType: 'ext4'
             Id: '83'
-            Size: 1024 * 1024 * 20
+            Size: '20G'
             Label: ''
         }
         disk.partitions.push partition
@@ -281,9 +298,7 @@ angular.module('lm.linbo').controller 'LMLINBOConfigModalController', ($scope, $
 
     $scope.removePartition = (partition, disk) ->
         messagebox.show(text: "Remove partition #{partition.Dev}?", positive: 'Remove', negative: 'Cancel').then () ->
-            for os in angular.copy($scope.config.os)
-                if os.Root == partition.Dev or os.Boot == partition.Dev
-                    $scope.config.os.remove(os)
+            $scope.config.os = (x for x in $scope.config.os when x.Root != partition.Dev and x.Boot != partition.Dev)
             disk.partitions.remove(partition)
             $scope.rebuildDisks()
 
@@ -395,6 +410,7 @@ angular.module('lm.linbo').controller 'LMLINBOController', ($scope, $http, $uibM
             newName = msg.value
             if newName
                 $http.get("/api/lm/linbo/config/#{configName}").then (resp) ->
+                    resp.data.config.LINBO.Group = newName
                     $http.post("/api/lm/linbo/config/start.conf.#{newName}", resp.data).then () ->
                         $route.reload()
 

@@ -27,8 +27,8 @@ class Handler(HttpPlugin):
                 if ':' in line and not line.startswith('#'):
                     k, v = line.split(':', 1)
                     r[k.strip()] = {
-                        'home': int(v.split('+')[1].strip()),
-                        'var': int(v.split('+')[0].strip()),
+                        'home': int(v.split('+')[0].strip()),
+                        'var': int(v.split('+')[1].strip()),
                     }
 
             for line in open(mpath):

@@ -35,6 +35,26 @@ class Handler(HttpPlugin):
                 r.append(file)
         return r
 
+    @url(r'/api/lm/linbo/examples-regs')
+    @authorize('lm:linbo:examples')
+    @endpoint(api=True)
+    def handle_api_examples_regs(self, http_context):
+        r = []
+        for file in os.listdir(os.path.join(self.LINBO_PATH, 'examples')):
+            if file.endswith('.reg'):
+                r.append(file)
+        return r
+
+    @url(r'/api/lm/linbo/examples-postsyncs')
+    @authorize('lm:linbo:examples')
+    @endpoint(api=True)
+    def handle_api_examples_postsyncs(self, http_context):
+        r = []
+        for file in os.listdir(os.path.join(self.LINBO_PATH, 'examples')):
+            if file.endswith('.postsync'):
+                r.append(file)
+        return r
+
     @url(r'/api/lm/linbo/icons')
     @authorize('lm:linbo:icons')
     @endpoint(api=True)
@@ -50,15 +70,19 @@ class Handler(HttpPlugin):
             if file.endswith(('.cloop', '.rsync')):
                 desc_file = os.path.join(self.LINBO_PATH, file + '.desc')
                 info_file = os.path.join(self.LINBO_PATH, file + '.info')
+                macct_file = os.path.join(self.LINBO_PATH, file + '.macct')
                 reg_file = os.path.join(self.LINBO_PATH, file + '.reg')
+                postsync_file = os.path.join(self.LINBO_PATH, file + '.postsync')
                 r.append({
                     'name': file,
                     'cloop': file.endswith('.cloop'),
                     'rsync': file.endswith('.rsync'),
                     'size': os.stat(os.path.join(self.LINBO_PATH, file)).st_size,
-                    'description': open(desc_file).read() if os.path.exists(desc_file) else None,
-                    'info': open(info_file).read() if os.path.exists(info_file) else None,
-                    'reg': open(reg_file).read() if os.path.exists(reg_file) else None,
+                    'description': open(desc_file).read().decode('utf-8') if os.path.exists(desc_file) else None,
+                    'info': open(info_file).read().decode('utf-8') if os.path.exists(info_file) else None,
+                    'macct': open(macct_file).read().decode('utf-8') if os.path.exists(macct_file) else None,
+                    'reg': open(reg_file).read().decode('utf-8') if os.path.exists(reg_file) else None,
+                    'postsync': open(postsync_file).read().decode('utf-8') if os.path.exists(postsync_file) else None,
                 })
         return r
 
@@ -69,32 +93,53 @@ class Handler(HttpPlugin):
         path = os.path.join(self.LINBO_PATH, name)
         desc_file = path + '.desc'
         info_file = path + '.info'
+        macct_file = path + '.macct'
         reg_file = path + '.reg'
+        postsync_file = path + '.postsync'
         if http_context.method == 'POST':
             data = http_context.json_body()
             if 'description' in data:
                 if data['description']:
                     with open(desc_file, 'w') as f:
-                        f.write(data['description'])
+                        f.write(data['description'].encode('utf-8'))
+                    os.chmod(desc_file, 0o664)
                 else:
                     if os.path.exists(desc_file):
                         os.unlink(desc_file)
             if 'info' in data:
                 if data['info']:
                     with open(info_file, 'w') as f:
-                        f.write(data['info'])
+                        f.write(data['info'].encode('utf-8'))
+                    os.chmod(info_file, 0o664)
                 else:
                     if os.path.exists(info_file):
                         os.unlink(info_file)
+            if 'macct' in data:
+                if data['macct']:
+                    with open(macct_file, 'w') as f:
+                        f.write(data['macct'].encode('utf-8'))
+                    os.chmod(macct_file, 0o600)
+                else:
+                    if os.path.exists(macct_file):
+                        os.unlink(macct_file)
             if 'reg' in data:
                 if data['reg']:
                     with open(reg_file, 'w') as f:
-                        f.write(data['reg'])
+                        f.write(data['reg'].encode('utf-8'))
+                    os.chmod(reg_file, 0o664)
                 else:
                     if os.path.exists(reg_file):
                         os.unlink(reg_file)
+            if 'postsync' in data:
+                if data['postsync']:
+                    with open(postsync_file, 'w') as f:
+                        f.write(data['postsync'].encode('utf-8'))
+                    os.chmod(postsync_file, 0o664)
+                else:
+                    if os.path.exists(postsync_file):
+                        os.unlink(postsync_file)
         else:
-            for p in [path, desc_file, info_file, reg_file]:
+            for p in [path, desc_file, info_file, macct_file, reg_file, postsync_file]:
                 if os.path.exists(p):
                     os.unlink(p)
 
@@ -162,4 +207,5 @@ class Handler(HttpPlugin):
 
             lm_backup_file(path)
             with open(path, 'w') as f:
-                f.write(content)
+                f.write(content.encode('utf-8'))
+            os.chmod(path, 0o755)

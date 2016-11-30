@@ -80,7 +80,7 @@
                             <select ng:model="config.config.LINBO.SystemType" class="form-control">
                                 <option value="bios">BIOS</option>
                                 <option value="bios64">BIOS 64Bit</option>
-                                <option value="efi">UEFI</option>
+                                <option value="efi32">UEFI</option>
                                 <option value="efi64">UEFI 64Bit</option>
                             </select>
                         </td>
@@ -104,7 +104,7 @@
                     <br>
                     <span checkbox ng:model="config.config.LINBO.AutoFormat" text="{{'Auto partition formatting'|translate}}" />
                     <br>
-                    <span checkbox ng:model="config.config.LINBO.AutoCache" text="{{'Auto update cache'|translate}}" />
+                    <span checkbox ng:model="config.config.LINBO.AutoInitCache" text="{{'Auto update cache'|translate}}" />
                     <br>
             </div>
             <div class="form-group">
@@ -160,7 +160,7 @@
                                 {{getName(partition)}}
                             </div>
                             <div class="ellipsis">
-                                {{getSize(partition)|bytes}}
+                                {{partition.Size ? (getSize(partition)|bytes) : '∞'}}
                             </div>
                         </div>
                         <button class="btn btn-default" ng:show="disk.partitions.length == 0" style="margin: 20px auto; display: block" ng:click="removeDisk(disk)">

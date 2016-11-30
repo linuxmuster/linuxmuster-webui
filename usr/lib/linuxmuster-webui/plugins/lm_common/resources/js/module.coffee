@@ -21,3 +21,6 @@ angular.module('lm.common').constant 'lmEncodingMap', {
     '8859-15': 'ISO8859-15'
     'win1252': 'cp1252'
 }
+
+$ () ->
+    $('body').addClass('customized')
