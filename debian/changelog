@@ -1,3 +1,9 @@
+linuxmuster-webui (1.0.6-0) babo62; urgency=low
+
+  * Fix empty Workstationsfile (Issue #5)
+
+ -- Maurice Cazautet <maurice.cazautet@netzint.de>  Mon, 06 Mar 2017 11:00:02 +0100
+
 linuxmuster-webui (1.0.5-0) babo62; urgency=low
 
   * Update AJ core and plugins, some bugfixes and css work, add new logo, optimize printers plugin 
